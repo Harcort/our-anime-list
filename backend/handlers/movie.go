@@ -33,7 +33,7 @@ func (m *module) CreateMovie(movie datatransfers.MovieCreate) (id uint, err erro
 		Description: movie.Description,
 	})
 	if err != nil {
-		return -1, errors.New("cannot create movie")
+		return 0, errors.New("cannot create movie")
 	}
 	return movieId, nil
 }

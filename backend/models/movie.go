@@ -10,7 +10,7 @@ type orm struct {
 }
 
 type Movie struct {
-	ID          uint      `gorm:"primaryKey" json:"movie_id"`
+	ID          uint      `gorm:"primaryKey" json:"id"`
 	Title       string    `json:"title" json:"title"`
 	Description string    `json:"description" json:"description"`
 	CreatedAt   time.Time `gorm:"autoCreateTime" json:"-"`
@@ -22,6 +22,8 @@ type MovieOrmer interface {
 	GetOneByName(name string) (movie Movie, err error)
 	InsertMovie(movie Movie) (id uint, err error)
 	UpdateMovie(movie Movie) (err error)
+	DeleteMovie(id uint) (err error)
+	GetMoviesByIds(ids []uint) (movies []Movie, err error)
 }
 
 func NewMovieOrmer(db *gorm.DB) MovieOrmer {
@@ -48,4 +50,14 @@ func (o *orm) UpdateMovie(movie Movie) (err error) {
 	// By default, only non-empty fields are updated. See https://gorm.io/docs/update.html#Updates-multiple-columns
 	result := o.db.Model(&Movie{}).Model(&movie).Updates(&movie)
 	return result.Error
+}
+
+func (o *orm) DeleteMovie(id uint) (err error) {
+	result := o.db.Model(&Movie{}).Where("id = ?", id).Delete(&Movie{})
+	return result.Error
+}
+
+func (o *orm) GetMoviesByIds(ids []uint) (movies []Movie, err error) {
+	result := o.db.Model(&Movie{}).Where("id IN ?", ids).Find(&movies)
+	return movies, result.Error
 }

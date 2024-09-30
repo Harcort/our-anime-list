@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -20,7 +21,7 @@ type HandlerFunc interface {
 	RetrieveUser(username string) (user models.User, err error)
 	UpdateUser(id uint, user datatransfers.UserUpdate) (err error)
 
-	CreateWatchlist(watchlist datatransfers.WatchlistCreate) (id uint, err error)
+	CreateWatchlist(c *gin.Context, watchlist datatransfers.WatchlistCreate) (id uint, err error)
 	RetrieveWatchlist(name string) (watchlist models.Watchlist, err error)
 	UpdateWatchlist(id uint, watchlist datatransfers.WatchlistUpdate) (err error)
 
@@ -46,6 +47,12 @@ func migrateTables(db *gorm.DB) (err error) {
 		&models.Movie{},
 		&models.Watchlist{},
 	)
+	if err != nil {
+		log.Println(fmt.Sprintf("[INIT] failed migrating tables %s", err))
+	} else {
+		log.Println("[INIT] migrated tables")
+	}
+
 	return err
 }
 

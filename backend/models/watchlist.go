@@ -10,9 +10,10 @@ type watchlistOrm struct {
 }
 
 type Watchlist struct {
-	ID           uint      `gorm:"primaryKey" json:"-"`
-	Name         string    `gorm:"uniqueIndex" json:"name"`
+	ID           uint      `gorm:"primaryKey" json:"id"`
+	Name         string    `json:"name"`
 	ListOfMovies []Movie   `gorm:"many2many:watchlist_movie;" json:"listOfMovies"`
+	UserID       uint      `json:"-"`
 	CreatedAt    time.Time `gorm:"autoCreateTime" json:"-"`
 	UpdatedAt    time.Time `gorm:"autoUpdateTime" json:"-"`
 }

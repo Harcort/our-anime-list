@@ -52,7 +52,7 @@ func POSTWatchlist(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, datatransfers.Response{Error: err.Error()})
 		return
 	}
-	_, err = handlers.Handler.CreateWatchlist(watchlist)
+	_, err = handlers.Handler.CreateWatchlist(c, watchlist)
 	if err != nil {
 		c.JSON(http.StatusNotModified, datatransfers.Response{Error: "failed updating watchlist"})
 		return

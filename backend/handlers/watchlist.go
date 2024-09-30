@@ -3,7 +3,7 @@ package handlers
 import (
 	"errors"
 	"fmt"
-
+	"github.com/gin-gonic/gin"
 	"our-anime-list/backend/datatransfers"
 	"our-anime-list/backend/models"
 )
@@ -26,13 +26,19 @@ func (m *module) UpdateWatchlist(id uint, watchlist datatransfers.WatchlistUpdat
 	return
 }
 
-func (m *module) CreateWatchlist(watchlist datatransfers.WatchlistCreate) (id uint, err error) {
+func (m *module) CreateWatchlist(c *gin.Context, watchlist datatransfers.WatchlistCreate) (id uint, err error) {
+	var movieIDs []uint
+	for _, movie := range watchlist.ListOfMovies {
+		movieIDs = append(movieIDs, movie.ID)
+	}
+	movies, err := m.db.movieOrmer.GetMoviesByIds(movieIDs)
 	watchlistId, err := m.db.watchlistOrmer.InsertWatchlist(models.Watchlist{
 		Name:         watchlist.Name,
-		ListOfMovies: watchlist.ListOfMovies,
+		ListOfMovies: movies,
+		UserID:       c.GetUint("user_id"),
 	})
 	if err != nil {
-		return -1, errors.New("cannot update movie")
+		return 0, errors.New("cannot update movie")
 	}
 	return watchlistId, nil
 }

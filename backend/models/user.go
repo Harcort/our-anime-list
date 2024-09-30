@@ -16,7 +16,7 @@ type User struct {
 	Email      string      `gorm:"unique" json:"-"`
 	Password   string      `json:"-"`
 	Bio        string      `json:"-"`
-	Watchlists []Watchlist `gorm:"many2many:user_watchlist;" json:"watchlists"`
+	Watchlists []Watchlist `gorm:"many2many:user_watchlist;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"watchlists"`
 	CreatedAt  time.Time   `gorm:"autoCreateTime" json:"-"`
 	UpdatedAt  time.Time   `gorm:"autoUpdateTime" json:"-"`
 }
