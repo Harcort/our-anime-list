@@ -25,6 +25,7 @@ func (m *module) UpdateWatchlist(id uint, watchlist datatransfers.WatchlistUpdat
 	}
 	return
 }
+
 func (m *module) CreateWatchlist(watchlist datatransfers.WatchlistCreate) (id uint, err error) {
 	watchlistId, err := m.db.watchlistOrmer.InsertWatchlist(models.Watchlist{
 		Name:         watchlist.Name,

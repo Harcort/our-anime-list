@@ -24,7 +24,7 @@ type HandlerFunc interface {
 	RetrieveWatchlist(name string) (watchlist models.Watchlist, err error)
 	UpdateWatchlist(id uint, watchlist datatransfers.WatchlistUpdate) (err error)
 
-	//CreateMovie(movie datatransfers.MovieCreate) (id uint, err error)
+	CreateMovie(movie datatransfers.MovieCreate) (id uint, err error)
 	RetrieveMovie(name string) (movie models.Movie, err error)
 	UpdateMovie(id uint, movie datatransfers.MovieUpdate) (err error)
 }

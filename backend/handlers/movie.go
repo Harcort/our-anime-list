@@ -26,13 +26,14 @@ func (m *module) UpdateMovie(id uint, movie datatransfers.MovieUpdate) (err erro
 	return
 }
 
-func (m *module) CreateMovie(id uint, movie datatransfers.MovieUpdate) (err error) {
-	if err = m.db.movieOrmer.UpdateMovie(models.Movie{
+func (m *module) CreateMovie(movie datatransfers.MovieCreate) (id uint, err error) {
+	movieId, err := m.db.movieOrmer.InsertMovie(models.Movie{
 		ID:          id,
 		Title:       movie.Title,
 		Description: movie.Description,
-	}); err != nil {
-		return errors.New("cannot create movie")
+	})
+	if err != nil {
+		return -1, errors.New("cannot create movie")
 	}
-	return
+	return movieId, nil
 }
