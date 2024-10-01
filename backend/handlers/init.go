@@ -41,7 +41,7 @@ type dbEntity struct {
 	movieOrmer     models.MovieOrmer
 }
 
-func migrateTables(db *gorm.DB) (err error) {
+func MigrateTables(db *gorm.DB) (err error) {
 	err = db.AutoMigrate(
 		&models.User{},
 		&models.Movie{},
@@ -68,7 +68,7 @@ func InitializeHandler() (err error) {
 		log.Println("[INIT] failed connecting to PostgreSQL")
 		return
 	}
-	err = migrateTables(db)
+	err = MigrateTables(db)
 	if err != nil {
 		log.Println("[INIT] failed migrating tables")
 		return

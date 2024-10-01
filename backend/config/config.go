@@ -30,7 +30,10 @@ func InitializeAppConfig() {
 	viper.AddConfigPath("/")
 	viper.AllowEmptyEnv(false)
 	viper.AutomaticEnv()
-	_ = viper.ReadInConfig()
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Println("[WARN] Error reading config file, %s", err)
+	}
 
 	AppConfig.Port = viper.GetInt("PORT")
 	AppConfig.Environment = viper.GetString("ENVIRONMENT")
